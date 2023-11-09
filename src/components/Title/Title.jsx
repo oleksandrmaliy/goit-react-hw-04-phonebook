@@ -14,5 +14,4 @@ export default TitleDiv;
 
 TitleDiv.propTypes = {
   title: PropTypes.string,
-//   children: PropTypes.object.isRequired,
 };

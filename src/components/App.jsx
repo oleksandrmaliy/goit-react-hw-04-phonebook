@@ -16,7 +16,6 @@
 // };
 
 import React, { Component } from "react";
-
 import ContactsList from './Contacts';
 import Filter from './Filter/';
 import ContactForm from './Form';

@@ -19,18 +19,26 @@ export class App extends Component {
   
   state = {...INITIAL_STATE}
 
-  addContact = newContact => {
-      for (const contact of this.state.contacts) {
-        if(contact.name === newContact.name.trim()) {
-        alert(`${newContact.name.trim()} is already in contacts`);
-        return
-      }
+   addContact = newContact => {
+    const allContacts = this.state.contacts;
+    const contactExists = allContacts.find(
+      contact => contact.name.toLowerCase().trim() === newContact.name.toLowerCase().trim()
+    );
+
+    if (contactExists) {
+      alert(`${newContact.name.trim()} is already in contacts`);
+      return;
     }
-    
-    this.setState(prevState => ({
-    contacts: [newContact, ...prevState.contacts]
-    }))
+
+    if (!contactExists) {
+      this.setState(prevState => ({
+        contacts: [newContact, ...prevState.contacts]
+        }))
+    }
   };
+
+
+
 
   deleteContact = contactId => {
     this.setState(prevState => ({

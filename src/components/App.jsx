@@ -19,7 +19,7 @@ export class App extends Component {
   
   state = {...INITIAL_STATE}
 
-   addContact = newContact => {
+  addContact = newContact => {
     const allContacts = this.state.contacts;
     const contactExists = allContacts.find(
       contact => contact.name.toLowerCase().trim() === newContact.name.toLowerCase().trim()
@@ -30,15 +30,11 @@ export class App extends Component {
       return;
     }
 
-    if (!contactExists) {
-      this.setState(prevState => ({
-        contacts: [newContact, ...prevState.contacts]
-        }))
-    }
+    this.setState(prevState => ({
+      contacts: [newContact, ...prevState.contacts]
+    }))
+    
   };
-
-
-
 
   deleteContact = contactId => {
     this.setState(prevState => ({

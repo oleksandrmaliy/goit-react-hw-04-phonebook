@@ -16,11 +16,6 @@ class ContactForm extends Component {
         number: ''
     }
 
-    // handleChange = event => {
-    //     const {name, value} = event.currentTarget;
-    //     this.setState( {[name]: value} );
-    //   }
-
     handleSubmit = (values, {resetForm}) => {
 
         const { name, number } = values;
@@ -28,19 +23,11 @@ class ContactForm extends Component {
           id: nanoid(5), name: name, number: number
         })
         this.props.addContact(contact); 
-        // this.reset();
         resetForm();
       }
 
-      // reset = () => {
-      //   this.setState({
-      //       name: '',
-      //       number: ''
-      //   });
-      // };
-
     render(){
-        // const { name, number } = this.state;
+
     return (
           <div> 
             <Formik initialValues={this.state} onSubmit={this.handleSubmit} validationSchema={schema}>

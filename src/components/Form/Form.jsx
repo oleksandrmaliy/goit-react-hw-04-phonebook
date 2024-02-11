@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+// import React, {useState} from "react";
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { Formik, ErrorMessage } from "formik";
@@ -10,27 +10,42 @@ const schema = yup.object().shape({
   number: yup.number().min(1000000).max(9999999).integer().required(),
 })
 
-class ContactForm extends Component {
-    state = {
-        name: '',
-        number: ''
-    }
+function ContactForm ({addContact}) {
 
-    handleSubmit = (values, {resetForm}) => {
+const values ={
+      name: '',
+      number: ''
+  };
+
+//   const [values, setValues] = useState({
+//     name: '',
+//     number: ''
+// });
+
+  // console.log(setValues);
+// const [name, setName] = useState('');
+// const [number, setNumber] = useState('');
+
+// const values = { name, number };
+
+    // state = {
+    //     name: '',
+    //     number: ''
+    // }
+
+    const handleSubmit = (values, {resetForm}) => {
 
         const { name, number } = values;
         const contact = ({
           id: nanoid(5), name: name, number: number
         })
-        this.props.addContact(contact); 
+        addContact(contact); 
         resetForm();
       }
 
-    render(){
-
     return (
           <div> 
-            <Formik initialValues={this.state} onSubmit={this.handleSubmit} validationSchema={schema}>
+            <Formik initialValues={values} onSubmit={handleSubmit} validationSchema={schema}>
               <FormStyled autoComplete='off'>
                 <LabelStyled>
                 <label htmlFor="name">
@@ -50,7 +65,7 @@ class ContactForm extends Component {
               </FormStyled>
             </Formik>
           </div>
-   )}}
+   )}
    
 export default ContactForm;
 

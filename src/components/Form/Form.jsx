@@ -10,7 +10,7 @@ const schema = yup.object().shape({
   number: yup.number().min(1000000).max(9999999).integer().required(),
 })
 
-function ContactForm ({addContact}) {
+const ContactForm = ({addContact}) => {
 
 const values ={
       name: '',

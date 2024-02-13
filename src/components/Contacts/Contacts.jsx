@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { List, ListItem } from './Contacts.styled';
 
-function ContactsList ({filteredContacts, deleteContact}){
+const ContactsList = ({filteredContacts, deleteContact}) => {
     return (
          <List>
             {filteredContacts.map(({id, name, number}) => 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import ContactsList from './Contacts';
 import Filter from './Filter/';
@@ -12,18 +12,38 @@ const INITIAL_STATE = [
     {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
   ];
 
-export class App extends Component {
-  
-  state = {
-    contacts: [ 
-      ...INITIAL_STATE
-    ],
-    filter: '',
-  }
+const App = () => {
 
-  addContact = newContact => {
-    const allContacts = this.state.contacts;
-    const contactExists = allContacts.find(
+  const [contacts, setContacts] = useState(() => {
+    const data = JSON.parse(localStorage.getItem('myContacts'));
+    return data || [...INITIAL_STATE];
+  });
+  const [filter, setFilter] = useState('');
+  
+  // state = {
+  //   contacts: [ 
+  //     ...INITIAL_STATE
+  //   ],
+  //   filter: '',
+  // }
+
+  // console.log(contacts);
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    if(!firstRender.current){
+      localStorage.setItem('myContacts', JSON.stringify(contacts));
+      console.log(firstRender.current);
+    }
+  }, [contacts]);
+
+  useEffect(() => {
+    firstRender.current = false;
+  }, []);
+
+  const addContact = (newContact) => {
+    // const allContacts = this.state.contacts;
+    const contactExists = contacts.find(
       contact => contact.name.toLowerCase().trim() === newContact.name.toLowerCase().trim()
     );
 
@@ -32,39 +52,43 @@ export class App extends Component {
       return;
     }
 
-    this.setState(prevState => ({
-      contacts: [newContact, ...prevState.contacts]
-    }))
+    setContacts([newContact, ...contacts])
     
   };
 
-  deleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId)
-    }))
+  const deleteContact = (contactId) => {
+    setContacts(contacts.filter(contact => contact.id !== contactId))
   };
   
-   filterChange = event => {
-    const {name, value} = event.currentTarget;
-    this.setState( {[name]: value} );
+  
+  const filterChange = ({currentTarget}) => {
+    // const {name, value} = event.currentTarget;
+    setFilter(currentTarget.value);
   };
 
-  componentDidMount () {
-    const lsMyContacts = JSON.parse(localStorage.getItem('myContacts'));
-    if(lsMyContacts){
-      this.setState({contacts: lsMyContacts});
-    }
-  }
+  // useEffect (() => {
+  //   const lsMyContacts = JSON.parse(localStorage.getItem('myContacts'));
+  //   if(lsMyContacts){
+  //     setContacts(lsMyContacts);
+  // }}, []);
 
-  componentDidUpdate (_, prevState) {
-    const {contacts} = this.state;
-    if(prevState.contacts.length !== contacts.length) {
-      localStorage.setItem('myContacts', JSON.stringify(this.state.contacts))
-    }
-  }
+  // componentDidMount () {
+  //   const lsMyContacts = JSON.parse(localStorage.getItem('myContacts'));
+  //   if(lsMyContacts){
+  //     this.setState({contacts: lsMyContacts});
+  //   }
+  // }
+  
 
-  render() {
-    const { filter, contacts } = this.state;
+  // componentDidUpdate (_, prevState) {
+  //   const {contacts} = this.state;
+  //   if(prevState.contacts.length !== contacts.length) {
+  //     localStorage.setItem('myContacts', JSON.stringify(this.state.contacts))
+  //   }
+  // }
+
+  // render() {
+  //   const { filter, contacts } = this.state;
 
     const normalizedFilter = filter.toLocaleLowerCase();
     const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
@@ -72,11 +96,13 @@ export class App extends Component {
     return (
       <div>
         <TitleDiv title='Phonebook'/>
-        <ContactForm addContact={this.addContact}/>
+        <ContactForm addContact={addContact}/>
         <TitleDiv title='Contacts'/>
-        <Filter value={filter} onChange={this.filterChange}/>
-        <ContactsList filteredContacts={filteredContacts} deleteContact={this.deleteContact}/>
+        <Filter value={filter} onChange={filterChange}/>
+        <ContactsList filteredContacts={filteredContacts} deleteContact={deleteContact}/>
       </div>
     )
   }
-}
+
+
+export default App;

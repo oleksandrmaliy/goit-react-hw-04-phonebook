@@ -33,7 +33,7 @@ const App = () => {
   useEffect(() => {
     if(!firstRender.current){
       localStorage.setItem('myContacts', JSON.stringify(contacts));
-      console.log(firstRender.current);
+      // console.log(firstRender.current);
     }
   }, [contacts]);
 

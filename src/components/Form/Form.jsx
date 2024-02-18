@@ -1,4 +1,3 @@
-// import React, {useState} from "react";
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { Formik, ErrorMessage } from "formik";
@@ -10,32 +9,16 @@ const schema = yup.object().shape({
   number: yup.number().min(1000000).max(9999999).integer().required(),
 })
 
+const initValues ={
+  name: '',
+  number: '',
+};
+
 const ContactForm = ({addContact}) => {
 
-const values ={
-      name: '',
-      number: ''
-  };
+    const handleSubmit = (initValues, {resetForm}) => {
 
-//   const [values, setValues] = useState({
-//     name: '',
-//     number: ''
-// });
-
-  // console.log(setValues);
-// const [name, setName] = useState('');
-// const [number, setNumber] = useState('');
-
-// const values = { name, number };
-
-    // state = {
-    //     name: '',
-    //     number: ''
-    // }
-
-    const handleSubmit = (values, {resetForm}) => {
-
-        const { name, number } = values;
+        const { name, number } = initValues;
         const contact = ({
           id: nanoid(5), name: name, number: number
         })
@@ -45,7 +28,7 @@ const values ={
 
     return (
           <div> 
-            <Formik initialValues={values} onSubmit={handleSubmit} validationSchema={schema}>
+            <Formik initialValues={initValues} onSubmit={handleSubmit} validationSchema={schema}>
               <FormStyled autoComplete='off'>
                 <LabelStyled>
                 <label htmlFor="name">

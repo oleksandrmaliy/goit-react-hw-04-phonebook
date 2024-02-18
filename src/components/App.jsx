@@ -19,30 +19,22 @@ const App = () => {
     return data || [...INITIAL_STATE];
   });
   const [filter, setFilter] = useState('');
-  
-  // state = {
-  //   contacts: [ 
-  //     ...INITIAL_STATE
-  //   ],
-  //   filter: '',
-  // }
-
-  // console.log(contacts);
+ 
   const firstRender = useRef(true);
 
   useEffect(() => {
-    if(!firstRender.current){
-      localStorage.setItem('myContacts', JSON.stringify(contacts));
-      // console.log(firstRender.current);
+    if(firstRender.current){
+      firstRender.current = false;
+      return;
     }
+    localStorage.setItem('myContacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  useEffect(() => {
-    firstRender.current = false;
-  }, []);
+  // useEffect(() => {
+  //   firstRender.current = false;
+  // }, []);
 
   const addContact = (newContact) => {
-    // const allContacts = this.state.contacts;
     const contactExists = contacts.find(
       contact => contact.name.toLowerCase().trim() === newContact.name.toLowerCase().trim()
     );
@@ -62,33 +54,8 @@ const App = () => {
   
   
   const filterChange = ({currentTarget}) => {
-    // const {name, value} = event.currentTarget;
     setFilter(currentTarget.value);
   };
-
-  // useEffect (() => {
-  //   const lsMyContacts = JSON.parse(localStorage.getItem('myContacts'));
-  //   if(lsMyContacts){
-  //     setContacts(lsMyContacts);
-  // }}, []);
-
-  // componentDidMount () {
-  //   const lsMyContacts = JSON.parse(localStorage.getItem('myContacts'));
-  //   if(lsMyContacts){
-  //     this.setState({contacts: lsMyContacts});
-  //   }
-  // }
-  
-
-  // componentDidUpdate (_, prevState) {
-  //   const {contacts} = this.state;
-  //   if(prevState.contacts.length !== contacts.length) {
-  //     localStorage.setItem('myContacts', JSON.stringify(this.state.contacts))
-  //   }
-  // }
-
-  // render() {
-  //   const { filter, contacts } = this.state;
 
     const normalizedFilter = filter.toLocaleLowerCase();
     const filteredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(normalizedFilter));
